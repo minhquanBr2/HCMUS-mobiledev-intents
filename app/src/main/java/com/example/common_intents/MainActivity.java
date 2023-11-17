@@ -110,6 +110,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void composeEmail(String[] addresses, String subject, Uri attachment) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_STREAM, attachment);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -126,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 if (viewVideoIntent.resolveActivity(getPackageManager()) != null) {
                     startActivity(viewVideoIntent);
                 }
-
+                break;
         }
     }
 }
