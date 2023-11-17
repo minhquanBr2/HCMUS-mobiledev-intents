@@ -28,29 +28,39 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        GridLayout gridLayout = findViewById(R.id.grid);
+        LinearLayout gridLayout = findViewById(R.id.grid);
         for (int i = 0; i < gridRowCount; i++) {
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+            LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    1
+            );
+            row.setLayoutParams(rowParams);
             for (int j = 0; j < gridColumnCount; j++) {
                 int id = idOffset + i * gridColumnCount + j;
                 Button btn = new Button(this);
-//                LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
-//                        100,
-//                        ViewGroup.LayoutParams.WRAP_CONTENT,
-//                        1
-//                );
-//                btnParams.gravity = Gravity.FILL;
-//                btn.setLayoutParams(btnParams);
-                btn.setId(id++);
-                gridLayout.addView(btn);
+                LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        1
+                );
+                btnParams.gravity = Gravity.FILL;
+                btn.setLayoutParams(btnParams);
+                btn.setId(++id);
+                btn.setText(String.valueOf(id - 65000).toString());
+                row.addView(btn);
             }
+            gridLayout.addView(row);
         }
 
         EditText editText1 = findViewById(R.id.editText1);
         EditText editText2 = findViewById(R.id.editText2);
         EditText editText3 = findViewById(R.id.editText3);
 
-        Button btn1 = findViewById(idOffset);
-        btn1.setText("DIAL");
+        Button btn1 = findViewById(idOffset + 1);
+        btn1.setText("CALL");
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btn2 = findViewById(idOffset + 1);
+        Button btn2 = findViewById(idOffset + 2);
         btn2.setText("WALLPAPER");
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btn3 = findViewById(idOffset + 2);
+        Button btn3 = findViewById(idOffset + 3);
         btn3.setText("VIDEO");
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
