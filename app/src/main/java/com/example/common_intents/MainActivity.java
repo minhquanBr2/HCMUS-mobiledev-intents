@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -17,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+
+import java.time.OffsetDateTime;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -91,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Button btn4 = findViewById(idOffset + 4);
-        btn4.setText("ALARM");
+        btn4.setText("SET ALARM");
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +108,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 insertContact();
+            }
+        });
+
+        Button btn6 = findViewById(idOffset + 6);
+        btn6.setText("WIFI SETTINGS");
+        btn6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openWifiSettings();
             }
         });
     }
@@ -192,4 +204,12 @@ public class MainActivity extends AppCompatActivity {
 //        }
     }
 
+
+
+    public void openWifiSettings() {
+        Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
 }
