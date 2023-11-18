@@ -55,6 +55,7 @@ public class IntentCaller {
         }
     }
 
+    // Phần của TÂN
     public static void createAlarm(Context context) {
         String message = "Wake up time";
         int hour = 6;
@@ -68,7 +69,6 @@ public class IntentCaller {
 //        }
     }
 
-    // Phần của TÂN
     public static void insertContact(Context context) {
         String name = "Alex";
         String email = "AlexKhung222@gmail.com";
