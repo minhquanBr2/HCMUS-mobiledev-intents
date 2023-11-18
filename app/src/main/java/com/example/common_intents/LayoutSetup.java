@@ -6,7 +6,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 public class LayoutSetup {
-
     public static void createButtonGridLayout(Context context, LinearLayout gridLayout, int rows, int cols, int idOffset, String[] btnName) {
         int cnt = 0;
         for (int i = 0; i < rows; i++) {
@@ -26,7 +25,7 @@ public class LayoutSetup {
                         1
                 ));
                 btn.setText(btnName[cnt++]);
-                btn.setId(++id);
+                btn.setId(id++);
                 row.addView(btn);
             }
             gridLayout.addView(row);
