@@ -105,14 +105,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IntentCaller.REQUEST_SELECT_VIDEO && resultCode == RESULT_OK && data != null) {
+        if (resultCode != RESULT_OK){
+            Log.e("Activity", "Intent return not fine");
+            return;
+        }
+        if (requestCode == IntentCaller.REQUEST_SELECT_VIDEO && data != null) {
             Uri uri = data.getData();
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(uri, "video/mp4");
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//DO NOT FORGET THIS EVER
             startActivity(intent);
         }
-        else if (requestCode == IntentCaller.REQUEST_SELECT_MUSIC && resultCode == RESULT_OK && data != null) {
+        else if (requestCode == IntentCaller.REQUEST_SELECT_MUSIC&& data != null) {
             Uri selectedMusicUri = (data != null) ? data.getData() : null;
             if (selectedMusicUri == null) {
                 return;
@@ -127,6 +131,24 @@ public class MainActivity extends AppCompatActivity {
             } catch (ActivityNotFoundException e) {
                 Log.d("DEBUG", "Activity not found");
             }
+        } else if (requestCode == IntentCaller.REQUEST_IMAGE_CAPTURE) {
+            Uri selectedImageUri = IntentCaller.photoUri;
+
+            if (selectedImageUri == null) {
+                Log.e("Camera: ", " Image empty");
+                return;
+            }
+            Log.e("Camera: ", "Success");
+            IntentCaller.composeEmail(this, new String[]{"hoduykhanghocmai@gmail.com"}, "CAMERA IMAGE", selectedImageUri);
+        } else if (requestCode == IntentCaller.REQUEST_VIDEO_CAPTURE) {
+            Uri selectedVideoUri = IntentCaller.videoUri;
+
+            if (selectedVideoUri == null) {
+                Log.e("Camera: ", " Image empty");
+                return;
+            }
+            Log.e("Camera: ", "Success");
+            IntentCaller.composeEmail(this, new String[]{"hoduykhanghocmai@gmail.com"}, "CAMERA VIDEO", selectedVideoUri);
         }
     }
 }

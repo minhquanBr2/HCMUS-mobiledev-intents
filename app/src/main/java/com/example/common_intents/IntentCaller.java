@@ -90,15 +90,26 @@ public class IntentCaller {
 
     // Phần của KHANG
     public static void composeEmail(Context context, String[] addresses, String subject, Uri attachment) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("*/*");
-        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_STREAM, attachment);
-        if (intent.resolveActivity(context.getPackageManager()) != null) {
-            context.startActivity(intent);
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+//        emailIntent.setType("application/image");
+        emailIntent.setData(Uri.parse("mailto:")); // Only email apps handle this.
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, addresses);
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,subject);
+        emailIntent.putExtra(Intent.EXTRA_STREAM, attachment);
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Help! I am in trouble!");
+        try {
+            context.startActivity(emailIntent);
+            Log.e("Email", "Success");
+        } catch (ActivityNotFoundException e) {
+            Log.d("DEBUG", "Activity not found");
         }
     }
+    private static File createImageFileInAppDir(Activity activity){
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File imagePath = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return new File(imagePath, "image_" + timeStamp + ".jpg");
+    }
+
     public static void capturePhoto(Activity activity) {
         File photoFile = createImageFileInAppDir(activity);
         if (photoFile == null){
@@ -119,6 +130,11 @@ public class IntentCaller {
         }
     }
 
+    private static File createVideoFileInAppDir(Activity activity){
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File imagePath = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return new File(imagePath, "video_" + timeStamp + ".mp4");
+    }
     public static void captureVideo(Activity activity) {
         File videoFile = createVideoFileInAppDir(activity);
         if (videoFile == null){
@@ -139,17 +155,8 @@ public class IntentCaller {
         }
     }
 
-    private static File createImageFileInAppDir(Activity activity){
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File imagePath = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return new File(imagePath, "image_" + timeStamp + ".jpg");
-    }
 
-    private static File createVideoFileInAppDir(Activity activity){
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File imagePath = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return new File(imagePath, "video_" + timeStamp + ".mp4");
-    }
+
 
     // Phần của HOÀNG
     public static void openWebPage(Context context, String url) {
