@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.AlarmClock;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        // create layout
         LinearLayout gridLayout = findViewById(R.id.grid);
         for (int i = 0; i < gridRowCount; i++) {
             LinearLayout row = new LinearLayout(this);
@@ -83,6 +86,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 viewVideo();
+            }
+        });
+
+        Button btn4 = findViewById(idOffset + 4);
+        btn4.setText("ALARM");
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createAlarm();
             }
         });
     }
@@ -141,5 +153,20 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+
+    // Intents cua Tan
+    public void createAlarm() {
+        String message = "Wake up time";
+        int hour = 6;
+        int minutes = 30;
+        Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
+                .putExtra(AlarmClock.EXTRA_MESSAGE, message)
+                .putExtra(AlarmClock.EXTRA_HOUR, hour)
+                .putExtra(AlarmClock.EXTRA_MINUTES, minutes);
+//        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+//        }
     }
 }
