@@ -26,7 +26,7 @@ public class LayoutSetup {
                         1
                 ));
                 btn.setText(btnName[cnt++]);
-                btn.setId(++id);
+                btn.setId(id++);
                 row.addView(btn);
             }
             gridLayout.addView(row);

@@ -1,15 +1,22 @@
 package com.example.common_intents;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.AlarmClock;
+import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
@@ -17,13 +24,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class IntentCaller {
-    private static final int PICK_VIDEO_REQUEST_CODE = 1;
-    static final int REQUEST_IMAGE_CAPTURE = 2;
-    static final int REQUEST_VIDEO_CAPTURE = 3;
+    static final int REQUEST_SELECT_VIDEO = 1;
+    static final int REQUEST_SELECT_MUSIC = 2;
+    static final int REQUEST_IMAGE_CAPTURE = 3;
+    static final int REQUEST_VIDEO_CAPTURE = 4;
     static Uri photoUri = null;
     static Uri videoUri = null;
 
-    public static void dialPhoneNumber(Context context, String phoneNumber){
+    // Phần của QUÂN
+    public static void callPhoneNumber(Context context, String phoneNumber){
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
         if (intent.resolveActivity(context.getPackageManager()) != null){
@@ -38,11 +47,11 @@ public class IntentCaller {
         }
     }
 
-    public static void viewVideo(Activity activity){
+    public static void playVideo(Activity activity){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
         intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"video/mp4"});
         if (intent.resolveActivity(activity.getPackageManager()) != null){
-            activity.startActivityForResult(intent, PICK_VIDEO_REQUEST_CODE);
+            activity.startActivityForResult(intent, REQUEST_SELECT_VIDEO);
         }
     }
 
@@ -59,6 +68,7 @@ public class IntentCaller {
 //        }
     }
 
+    // Phần của TÂN
     public static void insertContact(Context context) {
         String name = "Alex";
         String email = "AlexKhung222@gmail.com";
@@ -78,6 +88,7 @@ public class IntentCaller {
 //        }
     }
 
+    // Phần của KHANG
     public static void composeEmail(Context context, String[] addresses, String subject, Uri attachment) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("*/*");
@@ -138,5 +149,35 @@ public class IntentCaller {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File imagePath = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         return new File(imagePath, "video_" + timeStamp + ".mp4");
+    }
+
+    // Phần của HOÀNG
+    public static void openWebPage(Context context, String url) {
+        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+        intent.putExtra(SearchManager.QUERY, url);
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Log.d("DEBUG", "Activity not found");
+        }
+    }
+
+    // Function to view the calendar
+    public static void viewCalendar(Context context) {
+        Intent intent = new Intent(Intent.ACTION_INSERT,
+                CalendarContract.Events.CONTENT_URI);
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Log.d("DEBUG", "Activity not found");
+        }
+    }
+
+    public static void playMusic(Activity activity) {
+        Intent showMusicIntent = new Intent(Intent.ACTION_PICK);
+        showMusicIntent.setType("audio/*");
+        if (showMusicIntent.resolveActivity(activity.getPackageManager()) != null) {
+            activity.startActivityForResult(showMusicIntent, REQUEST_SELECT_MUSIC);
+        }
     }
 }
