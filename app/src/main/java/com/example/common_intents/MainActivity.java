@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.AlarmClock;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
@@ -97,6 +98,15 @@ public class MainActivity extends AppCompatActivity {
                 createAlarm();
             }
         });
+
+        Button btn5 = findViewById(idOffset+5);
+        btn5.setText("ADD CONTACT");
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertContact();
+            }
+        });
     }
 
     public void dialPhoneNumber(String phoneNumber){
@@ -169,4 +179,17 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 //        }
     }
+
+    public void insertContact() {
+        String name = "Alex";
+        String email = "AlexKhung222@gmail.com";
+        Intent intent = new Intent(Intent.ACTION_INSERT);
+        intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+        intent.putExtra(ContactsContract.Intents.Insert.NAME, name);
+        intent.putExtra(ContactsContract.Intents.Insert.EMAIL, email);
+//        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+//        }
+    }
+
 }
